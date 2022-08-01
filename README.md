@@ -88,6 +88,8 @@ If the number of passes (--pass-num) is two or more, multi-pass sequencing is pe
 "sd\_0001.sam": a simulated read dataset in the SAM format.
 "sd\_0001.maf": a list of alignments between the reference sequence and simulated reads in the MAF format.
 
+Note: for multi-pass sequencing in WGS simulation, the read length is set roughly equal to the --length-mean value, and --length-sd is disabled.
+
 Note: sampling-based simulation cannot be done with multi-pass sequencing.
 
 
