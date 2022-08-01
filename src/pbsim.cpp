@@ -1994,9 +1994,11 @@ int simulate_by_qshmm() {
     len_rand_value = end_wk;
   }
 
-  if (len_rand_value < 1) {
-    fprintf(stderr, "ERROR: length parameters are not appropriate.\n");
-    return FAILED;
+  if (sim.pass_num == 1) {
+    if (len_rand_value < 1) {
+      fprintf(stderr, "ERROR: length parameters are not appropriate.\n");
+      return FAILED;
+    }
   }
 
   // accuracy distribution
@@ -3638,9 +3640,11 @@ int simulate_by_errhmm() {
     len_rand_value = end_wk;
   }
 
-  if (len_rand_value < 1) {
-    fprintf(stderr, "ERROR: length parameters are not appropriate.\n");
-    return FAILED;
+  if (sim.pass_num == 1) {
+    if (len_rand_value < 1) {
+      fprintf(stderr, "ERROR: length parameters are not appropriate.\n");
+      return FAILED;
+    }
   }
 
   // accuracy distribution
@@ -4500,7 +4504,6 @@ int simulate_by_errhmm_trans() {
           revshort(mut.hp, mut.len);
         }
 
-        //mut.acc = 85;
         if (mut.acc < errhmm.acc_min) {
           rate_mag = int((double)(errhmm.acc_min-mut.acc)/errhmm.acc_min*100);
         } else if (mut.acc > errhmm.acc_max) {
