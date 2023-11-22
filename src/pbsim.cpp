@@ -2146,12 +2146,8 @@ int simulate_by_qshmm() {
 
   // simulation
   while (len_total < sim.len_quota) {
-    if (sim.pass_num == 1) {
-      index = rand() % len_rand_value + 1;
-      mut.len = prob2len[index];
-    } else {
-      mut.len = sim.len_mean;
-    }
+    index = rand() % len_rand_value + 1;
+    mut.len = prob2len[index];
     if (len_total + mut.len > sim.len_quota) {
       mut.len = sim.len_quota - len_total;
       if (mut.len < sim.len_min) {
@@ -3769,12 +3765,8 @@ int simulate_by_errhmm() {
 
   // simulation
   while (len_total < sim.len_quota) {
-    if (sim.pass_num == 1) {
-      index = rand() % len_rand_value + 1;
-      mut.len = prob2len[index];
-    } else {
-      mut.len = sim.len_mean;
-    }
+    index = rand() % len_rand_value + 1;
+    mut.len = prob2len[index];
     if (len_total + mut.len > sim.len_quota) {
       mut.len = sim.len_quota - len_total;
       if (mut.len < sim.len_min) {

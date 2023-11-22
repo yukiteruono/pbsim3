@@ -1,0 +1,9 @@
+2023-11-22 Yukiteru Ono  <yono@k.u-tokyo.ac.jp>
+
+    Release Version 3.0.1.
+
+        --length-sd enabled for multi-pass sequencing in WGS simulation.
+
+        Newly added QSHMM-ONT-HQ.model and ERRHMM-ONT-HQ.model.
+	OSHMM-ONT-HQ.model and ERRHMM-ONT-HQ.model are recommended when
+	simulating a read set with an average accuracy of 90% or higher.
