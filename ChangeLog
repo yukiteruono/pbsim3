@@ -1,3 +1,10 @@
+2024-02-16 Yukiteru Ono  <yono@k.u-tokyo.ac.jp>
+
+    Release Version 3.0.2.
+
+        Malloc error fixed.
+
+
 2023-11-22 Yukiteru Ono  <yono@k.u-tokyo.ac.jp>
 
     Release Version 3.0.1.
