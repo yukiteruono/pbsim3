@@ -5460,12 +5460,12 @@ int set_mut() {
   mut.sub_nt_n = (char*)"ATGC";
   mut.ins_nt = (char*)"ATGC";
 
-  if ((mut.err = (char *)malloc(sim.len_max + 1)) == 0) {
+  if ((mut.err = (char *)malloc(sim.len_max * 2 + 1)) == 0) {
     fprintf(stderr, "ERROR: Cannot allocate memory.\n");
     return FAILED;
   }
 
-  if ((mut.qc = (char *)malloc(sim.len_max + 1)) == 0) {
+  if ((mut.qc = (char *)malloc(sim.len_max * 2 + 1)) == 0) {
     fprintf(stderr, "ERROR: Cannot allocate memory.\n");
     return FAILED;
   }
