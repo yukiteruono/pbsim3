@@ -1791,7 +1791,7 @@ int simulate_by_sample() {
           read_offset ++;
 
           while ((ref_offset < mut.len) && (read_offset < mut.len)) {
-            hp = mut.hp[ref_offset-1];
+            hp = ref_offset == 0 ? 1 : mut.hp[ref_offset-1];
             rand_value = rand() % 1000000;
             qc_value = (int)mut.qc[read_offset-1] - 33;
             if (rand_value < mut.del_thre[qc_value] * genome.hp_del_bias[hp]) {
@@ -2241,7 +2241,7 @@ int simulate_by_qshmm() {
         read_offset ++;
 
         while (ref_offset < mut.len) {
-          hp = mut.hp[ref_offset-1];
+          hp = ref_offset == 0 ? 1 : mut.hp[ref_offset-1];
           rand_value = rand() % 1000000;
           qc_value = (int)mut.qc[read_offset-1] - 33;
           if (rand_value < mut.del_thre[qc_value] * genome.hp_del_bias[hp]) {
@@ -2877,7 +2877,7 @@ int simulate_by_qshmm_trans() {
             read_offset ++;
 
             while (ref_offset < mut.len) {
-              hp = mut.hp[ref_offset-1];
+              hp = ref_offset == 0 ? 1 : mut.hp[ref_offset-1];
               rand_value = rand() % 1000000;
               qc_value = (int)mut.qc[read_offset-1] - 33;
               if (rand_value < mut.del_thre[qc_value] * transcript.hp_del_bias[hp]) {
@@ -3401,7 +3401,7 @@ int simulate_by_qshmm_templ() {
           read_offset ++;
 
           while (ref_offset < templ.len) {
-            hp = templ.hp[ref_offset-1];
+            hp = ref_offset == 0 ? 1 : templ.hp[ref_offset-1];
             rand_value = rand() % 1000000;
             qc_value = (int)mut.qc[read_offset-1] - 33;
             if (rand_value < mut.del_thre[qc_value] * templ.hp_del_bias[hp]) {
