@@ -2305,7 +2305,7 @@ int simulate_by_qshmm() {
           fprintf(fp_sam, ",9");
         }
         qeval = len - 1;
-        fprintf(fp_sam, "\tqs:i:0\tqe:i:%ld\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
+        fprintf(fp_sam, "\tqs:i:0\tqe:i:%d\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
       }
 
       digit_num1[0] = 3;
@@ -2937,7 +2937,7 @@ int simulate_by_qshmm_trans() {
               fprintf(fp_sam, ",9");
             }
             qeval = len - 1;
-            fprintf(fp_sam, "\tqs:i:0\tqe:i:%ld\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
+            fprintf(fp_sam, "\tqs:i:0\tqe:i:%d\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
           }
 
           digit_num1[0] = strlen(transcript.id);
@@ -3455,7 +3455,7 @@ int simulate_by_qshmm_templ() {
             fprintf(fp_sam, ",9");
           }
           qeval = len - 1;
-          fprintf(fp_sam, "\tqs:i:0\tqe:i:%ld\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
+          fprintf(fp_sam, "\tqs:i:0\tqe:i:%d\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
         }
 
         digit_num1[0] = 3;
@@ -3999,7 +3999,7 @@ int simulate_by_errhmm() {
           fprintf(fp_sam, ",9");
         }
         qeval = len - 1;
-        fprintf(fp_sam, "\tqs:i:0\tqe:i:%ld\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
+        fprintf(fp_sam, "\tqs:i:0\tqe:i:%d\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
       }
 
       digit_num1[0] = 3;
@@ -4689,7 +4689,7 @@ int simulate_by_errhmm_trans() {
               fprintf(fp_sam, ",9");
             }
             qeval = len - 1;
-            fprintf(fp_sam, "\tqs:i:0\tqe:i:%ld\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
+            fprintf(fp_sam, "\tqs:i:0\tqe:i:%d\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
           }
 
           digit_num1[0] = strlen(transcript.id);
@@ -5259,7 +5259,7 @@ int simulate_by_errhmm_templ() {
             fprintf(fp_sam, ",9");
           }
           qeval = len - 1;
-          fprintf(fp_sam, "\tqs:i:0\tqe:i:%ld\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
+          fprintf(fp_sam, "\tqs:i:0\tqe:i:%d\trq:f:%f\tsn:B:f,10.0,10.0,10.0,10.0\tzm:i:%ld\tRG:Z:ffffffff\n", qeval, sim.accuracy_mean, sim.res_num);
         }
 
         digit_num1[0] = 3;
