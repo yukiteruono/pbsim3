@@ -1,3 +1,11 @@
+2024-03-03 Yukiteru Ono  <yono@k.u-tokyo.ac.jp>
+
+    Release Version 3.0.4.
+
+        QSHMM-ONT-HQ.model (corrected) and ERRHMM-ONT-HQ.model (unchanged) are
+	back.
+
+
 2024-02-26 Yukiteru Ono  <yono@k.u-tokyo.ac.jp>
 
     Release Version 3.0.3.
