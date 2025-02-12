@@ -5,6 +5,7 @@ We have developed PBSIM, a simulator for all types of Pacific Biosciences (PacBi
 PBSIM can simulate whole genome sequencing (WGS) and transcriptome sequencing (TS) of the PacBio RS II continuous long reads (CLR), PacBio Sequel CLR, PacBio Sequel high-fidelity (HiFi) reads, and ONT reads. PBSIM does not directly simulate HiFi reads, but only simulate generation of CLR by multi-pass sequencing; the output of PBSIM simulation is input into ccs software (https://github.com/PacificBiosciences/ccs), which generates HiFi reads.
 
 In addition, PBSIM can simulate full-length sequencing of user entered templates.
+
 Note: To compress the output files, SAMtools (https://github.com/samtools/samtools) and gzip (https://www.gnu.org/software/gzip/) must be installed in the PBSIM execution environment.
 
 
