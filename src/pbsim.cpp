@@ -68,7 +68,8 @@ struct sim_t {
   double res_len_mean, res_len_sd; 
   long res_sub_num, res_ins_num, res_del_num;
   double res_sub_rate, res_ins_rate, res_del_rate;
-  char *prefix, *outfile_ref, *outfile_fq, *outfile_maf, *outfile_sam;
+  char *prefix, *outfile_ref, *outfile_fq, *outfile_maf, *outfile_bam;
+  char *outfile_gzipfq, *outfile_gzipmaf, *outfile_stbam;
   char *profile_id, *profile_fq, *profile_stats;
   char *id_prefix;
   int pass_num, res_pass_num;
@@ -704,23 +705,26 @@ int main (int argc, char** argv) {
       sim.len_quota = (long long)(sim.depth * genome.len);
 
       if (sim.pass_num == 1) {
-        sprintf(sim.outfile_fq, "%s_%04ld.fastq", sim.prefix, genome.num);
-        if ((fp_fq = fopen(sim.outfile_fq, "w")) == NULL) {
+        sprintf(sim.outfile_fq, "%s_%04ld.fq.gz", sim.prefix, genome.num);
+        sprintf(sim.outfile_gzipfq, "gzip > %s", sim.outfile_fq);
+        if ((fp_fq = popen(sim.outfile_gzipfq, "w")) == NULL) {
           fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_fq);
           return FAILED;
         }
       } else {
-        sprintf(sim.outfile_sam, "%s_%04ld.sam", sim.prefix, genome.num);
-        if ((fp_sam = fopen(sim.outfile_sam, "w")) == NULL) {
-          fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_sam);
+        sprintf(sim.outfile_bam, "%s_%04ld.bam", sim.prefix, genome.num);
+        sprintf(sim.outfile_stbam, "samtools view -b -o %s -", sim.outfile_bam);
+        if ((fp_sam = popen(sim.outfile_stbam, "w")) == NULL) {
+          fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_bam);
           return FAILED;
         }
         fprintf(fp_sam, "@HD\tVN:1.5\tSO:unknown\tpb:3.0.7\n");
         fprintf(fp_sam, "@RG\tID:ffffffff\tPL:PACBIO\tDS:READTYPE=SUBREAD;Ipd:CodecV1=ip;PulseWidth:CodecV1=pw;BINDINGKIT=101-789-500;SEQUENCINGKIT=101-826-100;BASECALLERVERSION=5.0.0;FRAMERATEHZ=100.000000\tPU:%s%ld\tPM:SEQUELII\n", sim.id_prefix, genome.num);
       }
 
-      sprintf(sim.outfile_maf, "%s_%04ld.maf", sim.prefix, genome.num);
-      if ((fp_maf = fopen(sim.outfile_maf, "w")) == NULL) {
+      sprintf(sim.outfile_maf, "%s_%04ld.maf.gz", sim.prefix, genome.num);
+      sprintf(sim.outfile_gzipmaf, "gzip > %s", sim.outfile_maf);
+      if ((fp_maf = popen(sim.outfile_gzipmaf, "w")) == NULL) {
         fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_maf);
         return FAILED;
       }
@@ -764,23 +768,26 @@ int main (int argc, char** argv) {
     init_sim_res();
 
     if (sim.pass_num == 1) {
-      sprintf(sim.outfile_fq, "%s.fastq", sim.prefix);
-      if ((fp_fq = fopen(sim.outfile_fq, "w")) == NULL) {
+      sprintf(sim.outfile_fq, "%s.fq.gz", sim.prefix);
+      sprintf(sim.outfile_gzipfq, "gzip > %s", sim.outfile_fq);
+      if ((fp_fq = popen(sim.outfile_gzipfq, "w")) == NULL) {
         fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_fq);
         return FAILED;
       }
     } else {
-      sprintf(sim.outfile_sam, "%s.sam", sim.prefix);
-      if ((fp_sam = fopen(sim.outfile_sam, "w")) == NULL) {
-        fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_sam);
+      sprintf(sim.outfile_bam, "%s.bam", sim.prefix);
+      sprintf(sim.outfile_stbam, "samtools view -b -o %s -", sim.outfile_bam);
+      if ((fp_sam = popen(sim.outfile_stbam, "w")) == NULL) {
+        fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_bam);
         return FAILED;
       }
       fprintf(fp_sam, "@HD\tVN:1.5\tSO:unknown\tpb:3.0.7\n");
       fprintf(fp_sam, "@RG\tID:ffffffff\tPL:PACBIO\tDS:READTYPE=SUBREAD;Ipd:CodecV1=ip;PulseWidth:CodecV1=pw;BINDINGKIT=101-789-500;SEQUENCINGKIT=101-826-100;BASECALLERVERSION=5.0.0;FRAMERATEHZ=100.000000\tPU:%s\tPM:SEQUELII\n", sim.id_prefix);
     }
 
-    sprintf(sim.outfile_maf, "%s.maf", sim.prefix);
-    if ((fp_maf = fopen(sim.outfile_maf, "w")) == NULL) {
+    sprintf(sim.outfile_maf, "%s.maf.gz", sim.prefix);
+    sprintf(sim.outfile_gzipmaf, "gzip > %s", sim.outfile_maf);
+    if ((fp_maf = popen(sim.outfile_gzipmaf, "w")) == NULL) {
       fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_maf);
       return FAILED;
     }
@@ -814,23 +821,26 @@ int main (int argc, char** argv) {
     init_sim_res();
 
     if (sim.pass_num == 1) {
-      sprintf(sim.outfile_fq, "%s.fastq", sim.prefix);
-      if ((fp_fq = fopen(sim.outfile_fq, "w")) == NULL) {
+      sprintf(sim.outfile_fq, "%s.fq.gz", sim.prefix);
+      sprintf(sim.outfile_gzipfq, "gzip > %s", sim.outfile_fq);
+      if ((fp_fq = popen(sim.outfile_gzipfq, "w")) == NULL) {
         fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_fq);
         return FAILED;
       }
     } else {
-      sprintf(sim.outfile_sam, "%s.sam", sim.prefix);
-      if ((fp_sam = fopen(sim.outfile_sam, "w")) == NULL) {
-        fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_sam);
+      sprintf(sim.outfile_bam, "%s.bam", sim.prefix);
+      sprintf(sim.outfile_stbam, "samtools view -b -o %s -", sim.outfile_bam);
+      if ((fp_sam = popen(sim.outfile_stbam, "w")) == NULL) {
+        fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_bam);
         return FAILED;
       }
       fprintf(fp_sam, "@HD\tVN:1.5\tSO:unknown\tpb:3.0.7\n");
       fprintf(fp_sam, "@RG\tID:ffffffff\tPL:PACBIO\tDS:READTYPE=SUBREAD;Ipd:CodecV1=ip;PulseWidth:CodecV1=pw;BINDINGKIT=101-789-500;SEQUENCINGKIT=101-826-100;BASECALLERVERSION=5.0.0;FRAMERATEHZ=100.000000\tPU:%s\tPM:SEQUELII\n", sim.id_prefix);
     }
 
-    sprintf(sim.outfile_maf, "%s.maf", sim.prefix);
-    if ((fp_maf = fopen(sim.outfile_maf, "w")) == NULL) {
+    sprintf(sim.outfile_maf, "%s.maf.gz", sim.prefix);
+    sprintf(sim.outfile_gzipmaf, "gzip > %s", sim.outfile_maf);
+    if ((fp_maf = popen(sim.outfile_gzipmaf, "w")) == NULL) {
       fprintf(stderr, "ERROR: Cannot open output file: %s\n", sim.outfile_maf);
       return FAILED;
     }
@@ -1492,12 +1502,27 @@ int set_sim_param() {
     return FAILED;
   }
 
+  if ((sim.outfile_gzipfq = (char *)malloc(strlen(sim.prefix) + 24)) == 0) {
+    fprintf(stderr, "ERROR: Cannot allocate memory.\n");
+    return FAILED;
+  }
+
   if ((sim.outfile_maf = (char *)malloc(strlen(sim.prefix) + 10)) == 0) {
     fprintf(stderr, "ERROR: Cannot allocate memory.\n");
     return FAILED;
   }
 
-  if ((sim.outfile_sam = (char *)malloc(strlen(sim.prefix) + 10)) == 0) {
+  if ((sim.outfile_gzipmaf = (char *)malloc(strlen(sim.prefix) + 22)) == 0) {
+    fprintf(stderr, "ERROR: Cannot allocate memory.\n");
+    return FAILED;
+  }
+
+  if ((sim.outfile_bam = (char *)malloc(strlen(sim.prefix) + 10)) == 0) {
+    fprintf(stderr, "ERROR: Cannot allocate memory.\n");
+    return FAILED;
+  }
+
+  if ((sim.outfile_stbam = (char *)malloc(strlen(sim.prefix) + 34)) == 0) {
     fprintf(stderr, "ERROR: Cannot allocate memory.\n");
     return FAILED;
   }

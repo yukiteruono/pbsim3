@@ -1,3 +1,11 @@
+2025-02-12 Yukiteru Ono  <yono@k.u-tokyo.ac.jp>
+
+    Release Version 3.0.5.
+
+        The output file format is changed: FASTQ files and MAF files are
+	compressed with gzip, SAM files are changed to BAM files.
+
+
 2024-03-03 Yukiteru Ono  <yono@k.u-tokyo.ac.jp>
 
     Release Version 3.0.4.

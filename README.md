@@ -2,9 +2,10 @@
 
 We have developed PBSIM, a simulator for all types of Pacific Biosciences (PacBio) and Oxford Nanopore Technologies (ONT) long reads.
 
-PBSIM can simulate whole genome sequencing (WGS) and transcriptome sequencing (TS) of the PacBio RS II continuous long reads (CLR), PacBio Sequel CLR, PacBio Sequel high-fidelity (HiFi) reads, and ONT reads. PBSIM does not directly simulate HiFi reads, but only simulate generation of CLR by multi-pass sequencing; the output of PBSIM simulation (SAM format data) is converted to BAM format data, and input to ccs software (https://github.com/PacificBiosciences/ccs), which generates HiFi reads.
+PBSIM can simulate whole genome sequencing (WGS) and transcriptome sequencing (TS) of the PacBio RS II continuous long reads (CLR), PacBio Sequel CLR, PacBio Sequel high-fidelity (HiFi) reads, and ONT reads. PBSIM does not directly simulate HiFi reads, but only simulate generation of CLR by multi-pass sequencing; the output of PBSIM simulation is input into ccs software (https://github.com/PacificBiosciences/ccs), which generates HiFi reads.
 
 In addition, PBSIM can simulate full-length sequencing of user entered templates.
+Note: To compress the output files, SAMtools (https://github.com/samtools/samtools) and gzip (https://www.gnu.org/software/gzip/) must be installed in the PBSIM execution environment.
 
 
 2. Run PBSIM with the sample data
@@ -25,8 +26,8 @@ QSHMM-RSII.model: quality score model constructed from PacBio RS II reads.
 QSHMM-ONT.model and QSHMM-ONT-HQ.model: quality score model constructed from ONT reads. 
   If the reference sequence is a multi-FASTA file, Output files for simulated reads are created for each FASTA. three output files are created for each FASTA.
 "sd\_0001.ref": a single-FASTA file which is copied from the reference sequence.
-"sd\_0001.fastq": a simulated read dataset in the FASTQ format.
-"sd\_0001.maf": a list of alignments between the reference sequence and simulated reads in the MAF format.
+"sd\_0001.fq.gz": a simulated read dataset in the FASTQ format, compressed with gzip.
+"sd\_0001.maf.gz": a list of alignments between the reference sequence and simulated reads in the MAF format, compressed with gzip.
 
 Note: OSHMM-ONT-HQ.model is recommended when simulating a read set with an average accuracy of 90% or higher.
 
@@ -88,8 +89,8 @@ To run multi-pass sequencing:
 
 If the number of passes (--pass-num) is two or more, multi-pass sequencing is performed. The output files are the following three types.
 "sd\_0001.ref": a single-FASTA file which is copied from the reference sequence.
-"sd\_0001.sam": a simulated read dataset in the SAM format.
-"sd\_0001.maf": a list of alignments between the reference sequence and simulated reads in the MAF format.
+"sd\_0001.bam": a simulated read dataset in the BAM format.
+"sd\_0001.maf.gz": a list of alignments between the reference sequence and simulated reads in the MAF format, compressed with gzip.
 
 Note: sampling-based simulation cannot be done with multi-pass sequencing.
 
@@ -193,11 +194,11 @@ If a reference genome is multi-FASTA format, simulated datasets are generated fo
 Three output files are created for each reference sequence.
 
 "sd\_<num>.ref": a single-FASTA file which is copied from the reference sequence.
-"sd\_<num>.fastq": a simulated read dataset in the FASTQ format.
-"sd\_<num>.maf": a list of alignments between the reference sequence and the simulated reads in the MAF format.
+"sd\_<num>.fq.gz": a simulated read dataset in the FASTQ format, compressed with gzip.
+"sd\_<num>.maf.gz": a list of alignments between the reference sequence and the simulated reads in the MAF format, compressed with gzip.
 
-For the multi-pass sequencing, SAM format files are created instead of FASTQ format files.
-"sd\_0001.sam": a simulated read dataset in the SAM format.
+For the multi-pass sequencing, BAM format files are created instead of FASTQ format files.
+"sd\_0001.bam": a simulated read dataset in the BAM format.
 
 "sd" is prefix which can be specified with the --prefix option.
 
