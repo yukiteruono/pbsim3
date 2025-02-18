@@ -8,6 +8,8 @@ In addition, PBSIM can simulate full-length sequencing of user entered templates
 
 Note: To compress the output files, SAMtools (https://github.com/samtools/samtools) and gzip (https://www.gnu.org/software/gzip/) must be installed in the PBSIM execution environment.
 
+Note: PBSIM works on Linux/Unix and MacOS X. Convert the Windows line break code CRLF in the input files to LF.
+
 
 2. Run PBSIM with the sample data
 
