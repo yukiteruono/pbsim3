@@ -1,4 +1,4 @@
-1. About PBSIM
+## About PBSIM
 
 We have developed PBSIM, a simulator for all types of Pacific Biosciences (PacBio) and Oxford Nanopore Technologies (ONT) long reads.
 
@@ -11,11 +11,25 @@ Note: To compress the output files, SAMtools (https://github.com/samtools/samtoo
 Note: PBSIM works on Linux/Unix and MacOS X. Convert the Windows line break code CRLF in the input files to LF.
 
 
-2. Run PBSIM with the sample data
+## Installation
 
-(1) WGS simulation
+### Installation from source code
 
-To run model-based simulation using quality score model:
+    git clone https://github.com/yukiteruono/pbsim3.git
+    cd pbsim3
+    ./configure
+    make
+
+### Installation using conda
+
+    conda install bioconda::pbsim3
+
+
+## Run PBSIM with the sample data
+
+### WGS simulation
+
+#### To run model-based simulation using quality score model:
 
     pbsim --strategy wgs
           --method qshmm
@@ -34,7 +48,7 @@ QSHMM-ONT.model and QSHMM-ONT-HQ.model: quality score model constructed from ONT
 
 Note: OSHMM-ONT-HQ.model is recommended when simulating a read set with an average accuracy of 90% or higher.
 
-To run model-based simulation using error model:
+#### To run model-based simulation using error model:
 
     pbsim --strategy wgs
           --method errhmm
@@ -52,7 +66,7 @@ Note: ERRHMM-ONT-HQ.model is recommended when simulating a read set with an aver
 Note: All quality codes of simulated reads by error model is "!".
 
 
-To run sampling-based simulation:
+#### To run sampling-based simulation:
 
     pbsim --strategy wgs
           --method sample
@@ -81,7 +95,7 @@ At the second simulation, the sample profile is used. No sample fastq is needed 
           --sample-profile-id pf1
 
 
-To run multi-pass sequencing:
+#### To run multi-pass sequencing:
 
     pbsim --strategy wgs
           --method qshmm
@@ -98,10 +112,9 @@ If the number of passes (--pass-num) is two or more, multi-pass sequencing is pe
 Note: sampling-based simulation cannot be done with multi-pass sequencing.
 
 
+### TS simulation
 
-(2) TS simulation
-
-To run model-based simulation using quality score model:
+#### To run model-based simulation using quality score model:
 
     pbsim --strategy trans
           --method qshmm
@@ -112,7 +125,7 @@ In the example above, simulated reads are randomly sampled from transcript seque
 The user have to inputs the sequencing templates, that is, the transcript sequences and and their expression profile into PBSIM (see sample/sample.fasta). This information is given to PBSIM as one tab-delimited file, the format is 1-line-1-transcript, and the items have a transcript-ID, and the number of expressions (sense), number of expressions (anti-sense), and nucleotide sequences. The same number of reads as the numbers of expression will be generated.
 
 
-To run model-based simulation using error model:
+#### To run model-based simulation using error model:
 
     pbsim --strategy trans
           --method errhmm
@@ -120,7 +133,7 @@ To run model-based simulation using error model:
           --transcript sample/sample.transcript
 
 
-To run multi-pass sequencing:
+#### To run multi-pass sequencing:
 
     pbsim --strategy trans
           --method qshmm
@@ -132,10 +145,9 @@ To run multi-pass sequencing:
 Note: sampling-based simulation cannot be done with TS.
 
 
+### Template full-length sequencing simulation
 
-(3) Template full-length sequencing simulation
-
-To run model-based simulation using quality score model:
+#### To run model-based simulation using quality score model:
 
     pbsim --strategy templ
           --method qshmm
@@ -145,7 +157,7 @@ To run model-based simulation using quality score model:
 Simulation of sequencing error is performed using nucleotide sequences input by the user as templates. PBSIM uses model-based simulation to introduce errors into the templates. You can use the error rate options, but not the length options.
 
 
-To run multi-pass sequencing:
+#### To run multi-pass sequencing:
 
     pbsim --strategy templ
           --method qshmm
@@ -153,12 +165,10 @@ To run multi-pass sequencing:
           --template sample/sample.template
           --pass-num 10
 
-
 Note: sampling-based simulation cannot be done with template full-length sequencing.
 
 
-
-3. Model-based simulation
+## Model-based simulation
 
 For each read, the length is randomly drawn from the gamma distribution with given mean and standard deviation.
   The exponential function which is fit to read accuracy distribution is utilized to simulate with given mean. For each read, the accuracy is randomly drawn from the simulated distribution.
@@ -169,15 +179,13 @@ Error model: the FIC-HMM determines the error type at each positon. The error ra
   By setting minimum and maximum of read length, and range of that chosen from the distribution model can be restricted. Note that mean and standard deviation of the chosen read length are influenced by this restriction. Minimum and maximum of read accuracy are determined by mean of accuracy.
 
 
-
-4. Sampling-based simulation
+## Sampling-based simulation
 
 The lengths and quality scores of reads are simulated by randomly sampling them from real reads provided by the user. Subsequently, their nucleotide sequences are simulated by the same way as the model-based simulation. The restriction of read length and accuracy can be set by the options.
 Note that the sampling-based simulation cannot be done with multi-pass sequencing and TS.
 
 
-
-5. Input files
+## Input files
 
 A reference genome in FASTA format is required for WGS simulation, specified with the --genome option. 
 
@@ -190,8 +198,7 @@ A real read dataset in FASTQ format is required for sampling-based simulation, s
 Input file must be a text file.
 
 
-
-6. Output files
+## Output files
 
 If a reference genome is multi-FASTA format, simulated datasets are generated for each reference sequence numbered sequentially.
 Three output files are created for each reference sequence.
@@ -206,24 +213,21 @@ For the multi-pass sequencing, BAM format files are created instead of FASTQ for
 "sd" is prefix which can be specified with the --prefix option.
 
 
-
-7. Quality score model
+## Quality score model
 
 "data/QSHMM-\*.model" are FIC-HMM for quality scores. We utilized HMM with the latest model selection criteria called factorised information criteria (FIC-HMM) (Hamada et al., 2015). The model were trained for each read accuracy of each sequencer of PacBio and ONT. For read accuracy with insufficient training data, constant quality scores that match the accuracy were used.
 
 
-
-8. Error model
+## Error model
 
 "data/ERRHMM-\*.model" are FIC-HMM for errors. Error models were also built using FIC-HMM in the same way as when building the quality score models. The training data of the error models are the alignments between real reads and their reference genomes. The model were trained for each read accuracy of each sequencer of PacBio and ONT. For read accuracy with insufficient training data, the closest accuracy model is transformed and used in PBSIM.
 
 
-
-9. Deletion homopolymer bias of ONT reads
+## Deletion homopolymer bias of ONT reads
 
 ONT reads have a deletion homopolymer bias; the longer the homopolymer length, the higher the deletion rate. The option --hp-del-bias allows the deletion homopolymer bias. The option specifies the deletion rate at 10-mer, where the deletion rate at 1-mer is 1. The bias intensity from 1-mer to 10-mer is proportional to the length of the homopolymer. However, the error model only slightly simulates the bias. In the quality score model, the deletion rate can be changed flexibly;however, in the error model, the error ratio is built into the model, so the change is limited. When simulating homopolymer bias, a quality score model should be used.
 
 
-10. Runtime and memory
+## Runtime and memory
 
 When a coverage depth is 100x and a length of reference genome is about 10M, PBSIM generates simulated dataset in several minutes. The runtime is roughly proportional to the coverage depth and the length of reference genome. PBSIM requires several times as much memory as the size of the reference sequence.
