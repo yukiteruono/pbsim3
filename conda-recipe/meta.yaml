@@ -1,0 +1,39 @@
+{% set name = "pbsim3-varium" %}
+{% set version = "3.0.5.1" %}
+{% set commit = "0dc5adfcbdc85df56720b597a427c3d0ea66f434" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/yueyaog/pbsim3.git
+  git_rev: {{ commit }}
+  git_depth: 1
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - make
+    - {{ compiler('cxx') }}
+    - autoconf
+    - automake
+    - m4
+  run:
+    - samtools
+
+test:
+  commands:
+    - "pbsim 2>&1 | grep -q 'USAGE: pbsim'"
+
+about:
+  home: https://github.com/yueyaog/pbsim3
+  license: GPL-2.0-only
+  license_file: COPYING
+  summary: "pbsim3 v3.0.5, patched: $TMPDIR-aware sample staging file (avoids /tmp fill-up corruption under concurrent runs), FASTQ_LEN_MAX raised to 2000000 (upstream issue #27), and checked writes to the sample staging file."
+
+extra:
+  recipe-maintainers:
+    - yueyaog
