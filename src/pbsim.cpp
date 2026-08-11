@@ -24,7 +24,7 @@
 #define REF_SEQ_LEN_MAX 1000000000
 #define REF_SEQ_LEN_MIN 100
 #define FASTQ_NUM_MAX 100000000
-#define FASTQ_LEN_MAX 1000000
+#define FASTQ_LEN_MAX 2000000
 #define TEMPLATE_NUM_MAX 100000000
 #define TEMPLATE_LEN_MAX 1000000
 #define TRANS_LEN_MAX 1000000
@@ -579,9 +579,21 @@ int main (int argc, char** argv) {
 
   // Sample reads
   if (sim.method == METHOD_SAM) {
-    if ((fp_filtered = tmpfile()) == NULL) {
-      fprintf(stderr, "ERROR: Cannot open temporary file\n");
-      return FAILED;
+    // tmpfile() always uses the compiled-in P_tmpdir (/tmp) and ignores $TMPDIR,
+    // so concurrent runs sharing a small /tmp can silently corrupt each other's
+    // sample staging file. Honor $TMPDIR (falling back to /tmp) instead.
+    {
+      const char *tmp_env  = getenv("TMPDIR");
+      const char *tmp_base = (tmp_env != NULL && tmp_env[0] != '\0') ? tmp_env : "/tmp";
+      char tmp_template[PATH_MAX];
+      snprintf(tmp_template, sizeof(tmp_template), "%s/pbsim3_sample_XXXXXX", tmp_base);
+      int tmp_fd = mkstemp(tmp_template);
+      if (tmp_fd == -1 || (fp_filtered = fdopen(tmp_fd, "w+")) == NULL) {
+        fprintf(stderr, "ERROR: Cannot open temporary file\n");
+        return FAILED;
+      }
+      unlink(tmp_template);  // match tmpfile(): gone from the directory immediately,
+                              // space reclaimed on close or process exit
     }
     if (get_sample_inf() == FAILED) {
       exit(-1);
@@ -754,7 +766,10 @@ int main (int argc, char** argv) {
     }
 
     if ((sim.method == METHOD_SAM_STORE) || (sim.method == METHOD_SAM_REUSE)) {
-      fclose(fp_filtered);
+      if (fclose(fp_filtered) != 0) {
+        fprintf(stderr, "ERROR: write failed");
+        return FAILED;
+      }
       fclose(fp_stats);
     }
   // TRANSCRIPT
@@ -1261,7 +1276,10 @@ int get_sample_inf() {
               value = (int)(accuracy * 100000 + 0.5); 
               freq_accuracy[value] ++;
 
-              fprintf(fp_filtered, "%s\n", qc_tmp);
+              if (fprintf(fp_filtered, "%s\n", qc_tmp) < 0) {
+                fprintf(stderr, "ERROR: write failed");
+                return FAILED;
+              }
 
               if (len > sample.len_max_filtered) {
                 sample.len_max_filtered = len;
